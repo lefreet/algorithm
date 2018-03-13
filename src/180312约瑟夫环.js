@@ -36,17 +36,7 @@ LL.prototype = {
     let newNode = new Node(newVal)
     let current = this.find(curVal)
     newNode.next = current.next
-    newNode.prev = current
     current.next = newNode
-  },
-
-  display () {
-    let current = this.head
-    console.log(current.value)
-    while (current.next.value !== this.head.value) {
-      current = current.next
-      console.log(current.value)
-    }
   },
 
   remove (value) {
@@ -61,6 +51,15 @@ LL.prototype = {
     prev.next = next
     current.next = null
     return next.value
+  },
+
+  display () {
+    let current = this.head
+    console.log(current.value)
+    while (current.next !== this.head) {
+      current = current.next
+      console.log(current.value)
+    }
   }
 
 }
@@ -68,7 +67,7 @@ LL.prototype = {
 function test (n) {
   let ll = new LL(1)
 
-  for (let i = 2; i < n; i++) {
+  for (let i = 2; i <= n; i++) {
     ll.insert(i, i - 1)
   }
 
@@ -82,8 +81,6 @@ function test (n) {
 }
 
 test(41)
-
-module.exports = test
 
 
 

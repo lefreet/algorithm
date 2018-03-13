@@ -9,9 +9,8 @@ var Node = function (value) {
 
 var LL = function (headVal) {
   this.head = new Node(headVal)
-  // 双向和循环
+  // 循环
   this.head.next = this.head
-  this.head.prev = this.head
 }
 
 LL.prototype = {
@@ -19,6 +18,14 @@ LL.prototype = {
   find (value) {
     let current = this.head
     while (current.value !== value) {
+      current = current.next
+    }
+    return current
+  },
+
+  findPreview (value) {
+    let current = this.head
+    while (current.next.value !== value) {
       current = current.next
     }
     return current
@@ -43,56 +50,41 @@ LL.prototype = {
   },
 
   remove (value) {
+    let head = this.head
     let current = this.find(value)
+    let prev = this.findPreview(value)
     let next = current.next
-    current.prev.next = next
-    current.prev = null
-    current.next = null
-  },
-
-  removeNext3 (value) {
-    var current = this.find(value)
-    current.next.next = current.next.next.next
-    return current.next.next.value
-  },
-
-  length () {
-    let len = 1
-    let current = this.head
-    while (current.next.value !== this.head.value) {
-      current = current.next
-      len++
+    // 迭代head
+    if (head === current) {
+      this.head = next
     }
-    return len
-  },
-
-  next2 (value) {
-    let current = this.find(value)
-    return current.next.next.value
+    prev.next = next
+    current.next = null
+    return next.value
   }
 
 }
 
+function test (n) {
+  let ll = new LL(1)
 
-// test
-var ll = new LL(1)
-for (let i = 2; i < 6; i++) {
-  ll.insert(i, i - 1)
+  for (let i = 2; i < n; i++) {
+    ll.insert(i, i - 1)
+  }
+
+  let value = 1
+  while(ll.find(value).next.next !== ll.find(value)) {
+    let next3 = ll.find(value).next.next
+    value = ll.remove(next3.value)
+  }
+
+  ll.display()
 }
 
-var value = 1
-while (ll.length() > 2) {
-  value = ll.removeNext3(value)
-}
+test(41)
 
-// var next2 = 1
-// while (ll.length() > 2) {
-//   next2 = ll.next2(next2)
-//   ll.remove(next2)
-// }
+module.exports = test
 
-
-ll.display()
 
 
 
